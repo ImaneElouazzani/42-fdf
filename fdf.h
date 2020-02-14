@@ -6,7 +6,7 @@
 /*   By: ielouazz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 20:57:12 by ielouazz          #+#    #+#             */
-/*   Updated: 2020/02/08 22:46:10 by ielouazz         ###   ########.fr       */
+/*   Updated: 2020/02/14 16:15:58 by ielouazz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define FDF_H
 #define TRUE 1
 #define FALSE 0
+#define WIN_X 1000
+#define WIN_Y 1000
 #include "libft/libft.h"
 #include <mlx.h>
 #include <stdlib.h>
@@ -39,12 +41,14 @@ struct	s_point
 struct	s_map
 {
 	int 	size;
+	int		len;
 	int		width;
 	t_point	*tab;
 };
 
 void	draw_line(t_win window, t_point p1, t_point p2);
 void	store_point(t_win window, char *s, t_map *map);
+void	draw_map(t_map *map, t_win window);
 void	get_map_info(char *s, t_map *map);
 
 #endif

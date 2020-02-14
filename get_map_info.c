@@ -6,7 +6,7 @@
 /*   By: ielouazz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 21:58:41 by ielouazz          #+#    #+#             */
-/*   Updated: 2020/02/08 22:42:35 by ielouazz         ###   ########.fr       */
+/*   Updated: 2020/02/13 20:18:57 by ielouazz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,27 @@
 
 void	get_map_info(char *s,t_map *map)
 {
-	int	fd;
+	int		fd;
 	char	*line;
 	int		i;
-	int		k;
+	char	**tab;
 
 	map->size = 0;
 	map->width = 0;
 	fd = open(s, O_RDONLY);
-	k = 0;
 	while(get_next_line(fd, &line) > 0)
 	{
+		tab = ft_strsplit(line, ' ');
 		i = 0;
-		while (line[i] != '\0')
+		while (tab[i] != NULL)
 		{
-			if (ft_isdigit(line[i]) == TRUE)
-			{
-				map->size++;
-				if (k != 1)
-					map->width++;
-			}
+			map->size++;
 			i++;
-		}	
-		k = 1;
+		}
+		if (map->width == 0)
+			map->width = map->size;
+		map->len++;
 	}
+	printf("%d \n",map->width);
 	close(fd);
 }
