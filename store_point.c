@@ -6,30 +6,17 @@
 /*   By: ielouazz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 21:59:08 by ielouazz          #+#    #+#             */
-/*   Updated: 2020/02/14 16:39:34 by ielouazz         ###   ########.fr       */
+/*   Updated: 2020/02/16 17:11:56 by ielouazz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	ft_pp(t_point *tab, int len)
-{
-	int		i;
-
-	i = 0;
-
-	while (i < len)
-	{
-		printf("x %.f\ty %.f\tz %f\n", (tab[i]).x, (tab[i]).y, (tab[i]).z);
-		i++;
-	}
-}
-
-void	projection(t_point *p, int	type)
+void	ft_projection(t_point *p, int type)
 {
 	double x;
 
-	if (type == 1 )
+	if (type == 1)
 	{
 		x = p->x;
 		p->x = (x - p->y) * cos(0.523599);
@@ -38,66 +25,59 @@ void	projection(t_point *p, int	type)
 	}
 }
 
-void	draw_map(t_map *map, t_win window)
+void	draw_map(t_map *map, t_win window, int projection)
 {
-	int	i;
-	int	k;
+	int		i;
+	int		k;
 	t_point	p1;
 	t_point	p2;
 
-	i = 0;
+	i = -1;
 	k = 1;
-	while (i < map->size)
+	while (++i < map->size)
 	{
 		p1 = map->tab[i];
-		projection(&p1, 1);
-		if((i + 1) < map->width * k )
+		ft_projection(&p1, projection);
+		if (i + 1 < map->width * k || !(k++))
 		{
 			p2 = map->tab[i + 1];
-			projection(&p2, 1);
+			ft_projection(&p2, projection);
 			draw_line(window, p1, p2);
 		}
-		else
-			k++;
-		if ( (i + map->width) < map->size)
+		if (i + map->width < map->size)
 		{
-			p2 = map->tab[i + (map->width)];
-			projection(&p2, 1);
+			p2 = map->tab[i + map->width];
+			ft_projection(&p2, projection);
 			draw_line(window, p1, p2);
 		}
-		i++;
 	}
 }
 
 void	store_point(t_win window, char *s, t_map *map)
 {
-
 	char	*line;
-	char	**tab;
-	int		i;
-	int		j;
-	int		k;
+	t_incr	incr;
 	int		fd;
 	double	scale;
 
-	k = 0;
-	j = 0;
+	incr.k = -1;
+	incr.j = 0;
 	fd = open(s, O_RDONLY);
-	map->tab = (t_point *)malloc(map->size *sizeof(t_point));
+	map->tab = (t_point *)ft_memalloc((map->size + 1) * sizeof(t_point));
 	scale = 500 / map->width;
 	while (get_next_line(fd, &line) > 0)
 	{
-		i = 0;
-		tab = ft_strsplit(line, ' ');
-		while(tab[i] != NULL)
+		incr.i = -1;
+		map->split = ft_strsplit(line, ' ');
+		while (++incr.i < map->width)
 		{
-			map->tab[k].x = i * scale + (WIN_X / 2 - (map->width * scale) / 2);
-			map->tab[k].y = j * scale + (WIN_Y / 2 - (map->len * scale) / 2);
-			map->tab[k].z = ft_atoi(tab[i]) * scale;
-			i++;
-			k++;
+			map->tab[++incr.k].x = incr.i * scale + TRANS_X;
+			map->tab[incr.k].y = incr.j * scale + TRANS_Y;
+			map->tab[incr.k].z = ft_atoi(map->split[incr.i]) * scale;
 		}
-		j++;
+		incr.j++;
+		free(line);
+		ft_memdel2d(map->split);
 	}
 	close(fd);
 }
