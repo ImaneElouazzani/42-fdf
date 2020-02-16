@@ -6,7 +6,7 @@
 /*   By: ielouazz <ielouazz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 17:55:17 by ielouazz          #+#    #+#             */
-/*   Updated: 2020/02/16 17:27:29 by ielouazz         ###   ########.fr       */
+/*   Updated: 2020/02/16 17:58:59 by ielouazz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,12 @@ int		main(int ac, char **av)
 		mlx_key_hook(window.win_ptr, rcv_key_events, &window);
 		mlx_hook(window.win_ptr, 17, 0, ft_exit, map.tab);
 		mlx_loop(window.mlx_ptr);
+	}
+	else
+	{
+		ft_putstr("Usage : ");
+		ft_putstr(av[0]);
+		ft_putendl(" <filename> [ case_size z_size ]");
 	}
 	return (0);
 }
