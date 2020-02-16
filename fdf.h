@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ielouazz <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ielouazz <ielouazz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 20:57:12 by ielouazz          #+#    #+#             */
-/*   Updated: 2020/02/16 17:05:27 by ielouazz         ###   ########.fr       */
+/*   Updated: 2020/02/16 17:28:47 by ielouazz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,8 @@ void	draw_line(t_win window, t_point p1, t_point p2);
 void	store_point(t_win window, char *s, t_map *map);
 void	draw_map(t_map *map, t_win window, int projection);
 void	get_map_info(char *s, t_map *map);
-int		change_projection(int keycode, void *my_msg);
 void	ft_memdel2d(char **ptr);
+int		rcv_key_events(int keycode, t_win *window);
+int		ft_exit(t_point *tab);
 
 #endif
